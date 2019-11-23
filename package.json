@@ -4,14 +4,19 @@
   "description": "API service for Ticket Management system.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dvd90/hwLadyGagaTicketService"
   },
   "author": "David Sellam",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "moment": "^2.24.0"
+  }
 }
-
-
