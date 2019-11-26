@@ -16,7 +16,10 @@ module.exports = class TicketService {
 
     addOrder(date, tickets, user) {
         if (tickets <= this.availableTickets) {
-            const id = this.orders.length + 1;
+            let id = 1;
+            if (this.orders.length != 0) {
+                id = this.orders[this.orders.length - 1].getId() + 1;
+            }
             let ord = new order(id, date, tickets, user);
             this.orders.push(ord);
             this.availableTickets -= tickets;
@@ -26,8 +29,22 @@ module.exports = class TicketService {
         return false;
     }
 
-    changeOrder(id, date, tickets, user) {
-        const order = this.orders.find((order) => order.getId() === id);
+    findOrder(id) {
+        return this.orders.find((order) => order.getId() === id);
+    }
+
+    deleteOrder(id) {
+        const order = this.findOrder(id);
+        if (order) {
+            this.orders = this.orders.filter((order) => order.getId() != id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    changeOrder(id, date, tickets) {
+        const order = this.findOrder(id);
         if (order) {
             if (tickets <= this.availableTickets + order.nbTickets) {
                 if (order.nbTickets != tickets) {
@@ -38,7 +55,6 @@ module.exports = class TicketService {
                     order.setNbTickets(tickets);
                 }
                 order.setDate(date);
-                order.setUser(user);
                 return true;
             }
         }
@@ -55,4 +71,5 @@ module.exports = class TicketService {
         this.soldTickets = 0;
         return true;
     }
+
 }
