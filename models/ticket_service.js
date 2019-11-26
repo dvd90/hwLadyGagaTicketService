@@ -53,5 +53,6 @@ module.exports = class TicketService {
         this.orders = [];
         this.availableTickets += this.soldTickets;
         this.soldTickets = 0;
+        return true;
     }
 }

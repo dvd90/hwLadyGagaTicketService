@@ -6,4 +6,8 @@ module.exports = class User {
     getName() {
         return this.name;
     }
+
+    isAdmin() {
+        return false;
+    }
 }

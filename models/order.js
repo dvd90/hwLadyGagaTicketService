@@ -14,7 +14,6 @@ module.exports = class Order {
         return this.nbTickets;
     }
 
-
     setDate(new_date) {
         this.date = new_date;
     }
