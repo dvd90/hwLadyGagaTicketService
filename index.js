@@ -8,7 +8,6 @@ const port = 3031;
 const tickets = require('./config').tickets;
 const moment = require('moment');
 const chalk = require('chalk');
-// moment().format('DD-MM-YYYY')
 
 // Initialize Ticket Service
 const ticketService = new ts(tickets.nbTickets);
@@ -24,8 +23,8 @@ const checkUsers = (name, users) => {
 // checkUsers("David", users)
 // console.log(admin.checkAdminPassword("crazyPassword"));
 
-ticketService.addOrder(moment().format('DD-MM-YYYY'), 2, users[0]);
-ticketService.addOrder(moment().format('DD-MM-YYYY'), 3, users[1]);
+// ticketService.addOrder(moment().format('DD-MM-YYYY'), 2, users[0]);
+// ticketService.addOrder(moment().format('DD-MM-YYYY'), 3, users[1]);
 
 
 // ticketService.changeOrder(1, moment().format('DD-MM-YYYY'), 8, joy)
@@ -58,6 +57,7 @@ http.createServer((req, res) => {
             break;
         case 'POST':
             if (urlObj.pathname === '/addNewOrder') {
+                console.log('/addNewOrder  called!');
                 let body = '';
                 req.on('data', chunk => {
                     body += chunk.toString();
@@ -95,11 +95,9 @@ http.createServer((req, res) => {
             break;
         case 'PATCH':
             if (urlObj.pathname === '/editOrder' && urlObj.query.id && urlObj.query.tickets) {
-                console.log(urlObj.query.id);
-                console.log(urlObj.query.tickets);
+                console.log('/editOrder  called!');
                 if (ticketService.changeOrder(parseInt(urlObj.query.id), moment().format('DD-MM-YYYY'), parseInt(urlObj.query.id))) {
                     res.end(`The order id: ${urlObj.query.id} was successfully edited 💣`);
-                    console.log(ticketService.getAllOrders());
                 } else {
                     res.writeHeader(400);
                     res.end(`Sorry ${urlObj.query.id} is not an existing order id, try again 😔`);
@@ -118,7 +116,7 @@ http.createServer((req, res) => {
                 res.end("All the Orders are destroyed ☠️");
                 console.log(ticketService.getAllOrders());
             } else if (urlObj.pathname === '/cancelOrder' && urlObj.query.id) {
-                console.log(urlObj.query.id);
+                console.log('/cancelOrder  called!');
                 if (ticketService.deleteOrder(parseInt(urlObj.query.id))) {
                     res.end(`The order id: ${urlObj.query.id} was successfully deleted 💣`);
                     console.log(ticketService.getAllOrders());

@@ -2,6 +2,7 @@ const order = require('./order.js');
 
 module.exports = class TicketService {
     constructor(availableTickets) {
+        super();
         this.orders = [];
         this.availableTickets = availableTickets;
         this.soldTickets = 0;
@@ -24,8 +25,12 @@ module.exports = class TicketService {
             this.orders.push(ord);
             this.availableTickets -= tickets;
             this.soldTickets += tickets;
+            this.emit("Add order", ord);
+
             return true;
         }
+        this.emit("Add order", false);
+
         return false;
     }
 
@@ -37,8 +42,12 @@ module.exports = class TicketService {
         const order = this.findOrder(id);
         if (order) {
             this.orders = this.orders.filter((order) => order.getId() != id);
+            this.emit("Delete order", true);
+
             return true;
         } else {
+            this.emit("Delete order", false);
+
             return false;
         }
     }
@@ -55,17 +64,25 @@ module.exports = class TicketService {
                     order.setNbTickets(tickets);
                 }
                 order.setDate(date);
+                this.emit("Change order", order);
+
                 return true;
             }
         }
+        this.emit("Change order", false);
+
         return false;
     }
 
     getAllOrders() {
+        this.emit("Get all orders");
+
         return this.orders;
     }
 
     destroyAllOrders() {
+        this.emit("Destroy all orders");
+
         this.orders = [];
         this.availableTickets += this.soldTickets;
         this.soldTickets = 0;
